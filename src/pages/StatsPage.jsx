@@ -1,8 +1,11 @@
 import React from 'react'
+import Stats from '../components/Stats'
 
 const StatsPage = () => {
   return (
-    <div>StatsPage</div>
+    <div>
+      <Stats/>
+    </div>
   )
 }
 

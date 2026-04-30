@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import FocusBeeLogo from "../assets/FocusBeeLogo.png";
+import '../App.css'
 
 const NavBar = () => {
   return (
