@@ -12,70 +12,51 @@ import {
   getAchievements,
 } from "../utils/gameLogic";
 
-import "../App.css";
+import "../App.css"
 
 const DashboardCards = () => {
   const [sessions, setSessions] = useState([]);
-
   const [focusTime, setFocusTime] = useState(0);
   const [breakTime, setBreakTime] = useState(0);
   const [distractionCount, setDistractionCount] = useState(0);
+  const [goal, setGoal] = useState(
+    Number(localStorage.getItem("dailyGoal")) || 3600
+  );
+  const [dailyStreak, setDailyStreak] = useState(0);
 
   const xp = calculateXP(focusTime, distractionCount);
   const level = calculateLevel(focusTime);
   const streak = calculateStreak(focusTime, distractionCount);
-
-  const [goal, setGoal] = useState(
-    Number(localStorage.getItem("dailyGoal")) || 3600,
-  );
-
   const progress = getDailyGoalProgress(focusTime);
   const goalDone = isGoalCompleted(focusTime);
-
   const badge = getBadge(focusTime);
-
   const levelProgress = getLevelProgress(focusTime);
-
-  const [dailyStreak, setDailyStreak] = useState(0);
-
   const total = focusTime + breakTime;
-
   const message = getMotivation(focusTime);
-
-  const productivity = total === 0 ? 0 : ((focusTime / total) * 100).toFixed(1);
-
+  const productivity =
+    total === 0 ? 0 : ((focusTime / total) * 100).toFixed(1);
   const achievements = getAchievements(focusTime, distractionCount);
-
   const sessionsCount = JSON.parse(localStorage.getItem("sessions")) || [];
 
-  // clear session history
+  const totalFocus = sessions.reduce((sum, s) => sum + s.focus, 0);
+  const bestSession =
+    sessions.length === 0
+      ? null
+      : sessions.reduce((max, s) => (s.focus > max.focus ? s : max));
+
   const clearHistory = () => {
     localStorage.removeItem("sessions");
     setSessions([]);
   };
-
-  // calculating the total focus
-  const totalFocus = sessions.reduce((sum, session) => {
-    return sum + session.focus;
-  }, 0);
-
-  // best session - high score
-  const bestSession =
-    sessions.length === 0
-      ? null
-      : sessions.reduce((max, session) =>
-          session.focus > max.focus ? session : max,
-        );
 
   useEffect(() => {
     const interval = setInterval(() => {
       setFocusTime(Number(localStorage.getItem("focusTime")) || 0);
       setBreakTime(Number(localStorage.getItem("breakTime")) || 0);
       setDistractionCount(
-        Number(localStorage.getItem("distractionCount")) || 0,
+        Number(localStorage.getItem("distractionCount")) || 0
       );
     }, 1000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -83,168 +64,257 @@ const DashboardCards = () => {
     setDailyStreak(getDailyStreak());
   }, []);
 
-  // loading the sessions
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("sessions")) || [];
     setSessions(data);
   }, []);
 
+  const statCards = [
+    { icon: "⭐", label: "XP Points", value: xp },
+    { icon: "🏆", label: "Level", value: level },
+    {
+      icon: "🔥",
+      label: "Streak",
+      value: streak,
+      unit: "min",
+    },
+    { icon: "🏅", label: "Badge", value: badge, isText: true },
+    {
+      icon: "📅",
+      label: "Daily Streak",
+      value: dailyStreak,
+      unit: "days",
+    },
+  ];
+
+  const summaryRows = [
+    {
+      dot: "dot-green",
+      label: "Focus time",
+      value: `${Math.floor(focusTime / 60)} min`,
+    },
+    {
+      dot: "dot-red",
+      label: "Break time",
+      value: `${Math.floor(breakTime / 60)} min`,
+    },
+    {
+      dot: "dot-orange",
+      label: "Distractions",
+      value: distractionCount,
+    },
+    {
+      dot: "dot-blue",
+      label: "Productivity",
+      value: `${productivity}%`,
+    },
+    {
+      dot: "dot-purple",
+      label: "Total sessions",
+      value: sessionsCount.length,
+    },
+  ];
+
   return (
-    <div className="dashboard-container">
-      {/* Top Stats */}
+    <div className="db">
+      {/* ── STATS ROW ── */}
+      <p className="section-label">Overview</p>
       <div className="stats-grid">
-        <div className="card stat-card">
-          <h2>⭐ XP</h2>
-          <p>{xp}</p>
-        </div>
-
-        <div className="card stat-card">
-          <h2>🏆 Level</h2>
-          <p>{level}</p>
-        </div>
-
-        <div className="card stat-card">
-          <h2>🔥 Streak</h2>
-          <p>{streak} min</p>
-        </div>
-
-        <div className="card stat-card">
-          <h2>🏅 Badge</h2>
-          <p>{badge}</p>
-        </div>
-
-        <div className="card stat-card">
-          <h2>📅 Daily Streak</h2>
-          <p>{dailyStreak} days</p>
-        </div>
-      </div>
-
-      {/* Goal Section */}
-      <div className="card goal-card">
-        <h3>🎯 Daily Goal</h3>
-
-        <input
-          className="goal-input"
-          type="number"
-          placeholder="Set daily goal (in minutes)"
-          onChange={(e) => {
-            const minutes = Number(e.target.value);
-            if (isNaN(minutes) || minutes <= 0) return;
-
-            const value = minutes * 60;
-            localStorage.setItem("dailyGoal", value);
-            setGoal(value);
-          }}
-        />
-
-        <p>Current Goal: {Math.floor(goal / 60)} min</p>
-
-        <h2>Goal Progress: {progress.toFixed(1)}%</h2>
-
-        <div className="progress-bar">
-          <div
-            className="progress-fill"
-            style={{ width: `${levelProgress}%` }}
-          ></div>
-        </div>
-
-        <p>{levelProgress.toFixed(1)}% to next level</p>
-
-        {goalDone && <h3 className="goal-complete">✅ Goal Completed!</h3>}
-      </div>
-
-      {/* Summary Section */}
-      <div className="card summary-card">
-        <h3>📊 Today’s Summary</h3>
-
-        <div className="summary-item">
-          <span>🟢 Focus Time</span>
-          <span>{Math.floor(focusTime / 60)} minutes</span>
-        </div>
-
-        <div className="summary-item">
-          <span>🔴 Break Time</span>
-          <span>{Math.floor(breakTime / 60)} minutes</span>
-        </div>
-
-        <div className="summary-item">
-          <span>🟠 Distractions</span>
-          <span>{distractionCount}</span>
-        </div>
-
-        <div className="summary-item">
-          <span>⚡ Productivity</span>
-          <span>{productivity}%</span>
-        </div>
-
-        <div className="summary-item">
-          <span>📘 Total Sessions</span>
-          <span>{sessionsCount.length}</span>
-        </div>
-
-        <h3 className="motivation-message">{message}</h3>
-      </div>
-
-      {/* Focus Stats */}
-      <div className="card focus-card">
-        <h3>📊 Total Focus Time</h3>
-        <p>{Math.floor(totalFocus / 60)} minutes</p>
-      </div>
-
-      {/* Best Session */}
-      <div className="card best-session-card">
-        <h3>🏆 Best Session</h3>
-
-        {bestSession ? (
-          <div className="session-box">
-            <p>📆 {bestSession.date}</p>
-            <p>Focus: {Math.floor(bestSession.focus / 60)} min</p>
-            <p>Distractions: {bestSession.distractions}</p>
+        {statCards.map((card, i) => (
+          <div className="stat-card" key={i}>
+            <div className="stat-icon">{card.icon}</div>
+            <div className="stat-label">{card.label}</div>
+            <div className={`stat-value${card.isText ? " stat-value--text" : ""}`}>
+              {card.value}
+              {card.unit && (
+                <span className="stat-unit">{card.unit}</span>
+              )}
+            </div>
           </div>
-        ) : (
-          <p>No sessions yet</p>
-        )}
+        ))}
       </div>
 
-      {/* Achievements */}
-      <div className="card achievements-card">
-        <h3>🏆 Achievements</h3>
-
-        {achievements.length === 0 ? (
-          <p>No achievements yet</p>
-        ) : (
-          <div className="achievements-list">
-            {achievements.map((ach, index) => (
-              <p key={index} className="achievement-item">
-                {ach}
-              </p>
-            ))}
+      {/* ── GOAL + SUMMARY ── */}
+      <div className="two-col">
+        {/* Goal */}
+        <div className="card">
+          <div className="card-title">
+            <span className="card-icon">🎯</span> Daily Goal
           </div>
-        )}
+
+          <input
+            className="goal-input"
+            type="number"
+            placeholder="Set goal in minutes…"
+            onChange={(e) => {
+              const mins = Number(e.target.value);
+              if (isNaN(mins) || mins <= 0) return;
+              const val = mins * 60;
+              localStorage.setItem("dailyGoal", val);
+              setGoal(val);
+            }}
+          />
+
+          <div className="goal-meta">
+            Current goal: <strong>{Math.floor(goal / 60)} min</strong>
+          </div>
+
+          <div className="progress-track">
+            <div
+              className="progress-fill"
+              style={{ width: `${Math.min(progress, 100).toFixed(1)}%` }}
+            />
+          </div>
+          <div className="progress-labels">
+            <span>Goal: {progress.toFixed(1)}%</span>
+            <span>Level: {levelProgress.toFixed(1)}% to next</span>
+          </div>
+
+          {goalDone && (
+            <div className="goal-done">✅ Goal Completed!</div>
+          )}
+        </div>
+
+        {/* Summary */}
+        <div className="card">
+          <div className="card-title">
+            <span className="card-icon">📊</span> Today's Summary
+          </div>
+
+          {summaryRows.map((row, i) => (
+            <div className="summary-row" key={i}>
+              <div className="summary-left">
+                <div className={`dot ${row.dot}`} />
+                {row.label}
+              </div>
+              <div className="summary-right">{row.value}</div>
+            </div>
+          ))}
+
+          <div className="motivation">💬 {message}</div>
+        </div>
       </div>
 
-      {/* Session History */}
+      {/* ── FOCUS TOTAL · BEST SESSION · ACHIEVEMENTS ── */}
+      <div className="three-col">
+        {/* Total Focus */}
+        <div className="card focus-total-card">
+          <div className="card-title">
+            <span className="card-icon">📊</span> Total Focus
+          </div>
+          <div className="focus-number">{Math.floor(totalFocus / 60)}</div>
+          <div className="focus-sub">minutes this week</div>
+        </div>
+
+        {/* Best Session */}
+        <div className="card">
+          <div className="card-title">
+            <span className="card-icon">🏆</span> Best Session
+          </div>
+          {bestSession ? (
+            <div className="session-box">
+              <div className="session-row">
+                📆 <span className="session-tag">{bestSession.date}</span>
+              </div>
+              <div className="session-row">
+                ⏱{" "}
+                <span className="session-tag">
+                  {Math.floor(bestSession.focus / 60)} min
+                </span>{" "}
+                focused
+              </div>
+              <div className="session-row">
+                ⚡{" "}
+                <span className="session-tag">
+                  {bestSession.distractions}
+                </span>{" "}
+                distraction{bestSession.distractions !== 1 ? "s" : ""}
+              </div>
+            </div>
+          ) : (
+            <div className="empty-state">
+              <div className="empty-icon">🎯</div>
+              <p>No sessions yet</p>
+            </div>
+          )}
+        </div>
+
+        {/* Achievements */}
+        <div className="card">
+          <div className="card-title">
+            <span className="card-icon">🏆</span> Achievements
+          </div>
+          {achievements.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-icon">🌟</div>
+              <p>No achievements yet</p>
+            </div>
+          ) : (
+            <div className="ach-list">
+              {achievements.map((ach, i) => (
+                <div className="ach-item" key={i}>
+                  <div className="ach-badge">🏅</div>
+                  {ach}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── SESSION HISTORY ── */}
       <div className="card history-card">
         <div className="history-header">
-          <h3>📅 Session History</h3>
-
+          <div className="card-title" style={{ marginBottom: 0 }}>
+            <span className="card-icon">📅</span> Session History
+          </div>
           <button className="clear-btn" onClick={clearHistory}>
-            Clear History ❌
+            Clear history ✕
           </button>
         </div>
 
         {sessions.length === 0 ? (
-          <p>No sessions yet</p>
+          <div className="empty-state">
+            <div className="empty-icon">📋</div>
+            <p>No sessions yet</p>
+          </div>
         ) : (
-          sessions.map((session, index) => (
-            <div key={index} className="session-history-item">
-              <p>📆 {session.date}</p>
-              <p>Focus Time: {Math.floor(session.focus / 60)} min</p>
-              <p>Break Time: {Math.floor(session.break / 60)} min</p>
-              <p>Distractions: {session.distractions}</p>
-              <p>⚡ Productivity Score: {productivity}%</p>
-            </div>
-          ))
+          sessions.map((session, i) => {
+            const sessionProductivity =
+              session.focus + session.break === 0
+                ? 0
+                : (
+                    (session.focus / (session.focus + session.break)) *
+                    100
+                  ).toFixed(1);
+            return (
+              <div className="history-item" key={i}>
+                <div className="history-date">📆 {session.date}</div>
+                <div className="history-metrics">
+                  <div className="metric-chip">
+                    <div className="mc-val">
+                      {Math.floor(session.focus / 60)}
+                    </div>
+                    <div className="mc-lbl">Focus min</div>
+                  </div>
+                  <div className="metric-chip">
+                    <div className="mc-val">
+                      {Math.floor(session.break / 60)}
+                    </div>
+                    <div className="mc-lbl">Break min</div>
+                  </div>
+                  <div className="metric-chip">
+                    <div className="mc-val">{session.distractions}</div>
+                    <div className="mc-lbl">Distractions</div>
+                  </div>
+                  <div className="metric-chip">
+                    <div className="mc-val">{sessionProductivity}%</div>
+                    <div className="mc-lbl">Productivity</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })
         )}
       </div>
     </div>
