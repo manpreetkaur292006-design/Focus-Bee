@@ -1,16 +1,219 @@
-# React + Vite
+# FocusBee 🐝 - Focus & Distraction Tracking Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Author : Manpreet Kaur
 
-Currently, two official plugins are available:
+FocusBee is a productivity and focus management web application built using React and Vite. The application helps users improve concentration using the Pomodoro Technique while tracking productivity statistics, focus streaks, achievements, goals, and session history.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+# 🚀 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ⏳ Pomodoro Timer
 
-## Expanding the ESLint configuration
+* 25-minute focus sessions
+* 5-minute break sessions
+* Start, Pause, and Reset controls
+* Automatic switching between focus and break modes
+* Alert notifications when sessions end
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📊 Statistics Dashboard
+
+* Focus time tracking
+* Break time tracking
+* Distraction count tracking
+* Productivity percentage
+* Interactive charts using Chart.js
+
+## 🏆 Gamification System
+
+* XP system
+* Levels
+* Focus streaks
+* Daily streaks
+* Achievement badges
+* Motivation messages
+
+## 🎯 Daily Goals
+
+* Set custom daily focus goals
+* Goal progress tracking
+* Goal completion notification
+
+## 🗂 Session History
+
+* Stores session history using Local Storage
+* Tracks:
+
+  * Date
+  * Focus duration
+  * Break duration
+  * Distractions
+
+## 💾 Local Storage Support
+
+* Saves user data even after page refresh
+* Stores:
+
+  * Focus time
+  * Break time
+  * Distractions
+  * Goals
+  * Sessions
+  * Streaks
+
+---
+
+# 🛠 Tech Stack
+
+* React.js
+* Vite
+* JavaScript
+* Chart.js
+* React Chart.js 2
+* CSS
+* Local Storage API
+
+---
+
+# 📁 Project Structure
+
+```bash
+FOCUSBEE-CAPSTONE/
+└── Focus-Bee/
+    ├── node_modules/
+    ├── public/
+    ├── src/
+    │   ├── assets/
+    │   ├── components/
+    │   │   ├── DashboardCards.jsx
+    │   │   ├── Hero.jsx
+    │   │   ├── NavBar.jsx
+    │   │   ├── QuotesCard.jsx
+    │   │   ├── Stats.jsx
+    │   │   ├── TaskList.jsx
+    │   │   └── Timer.jsx
+    │   │
+    │   ├── pages/
+    │   │   ├── DashboardPage.jsx
+    │   │   ├── FocusPage.jsx
+    │   │   ├── Home.jsx
+    │   │   └── StatsPage.jsx
+    │   │
+    │   ├── utils/
+    │   │   ├── formatTime.js
+    │   │   ├── gameLogic.js
+    │   │   └── localStorage.js
+    │   │
+    │   ├── App.css
+    │   ├── App.jsx
+    │   ├── index.css
+    │   └── main.jsx
+    │
+    ├── .gitignore
+    ├── eslint.config.js
+    ├── index.html
+    ├── package-lock.json
+    ├── package.json
+    ├── README.md
+    ├── vite.config.js
+    └── Focus-Bee.md
+```
+
+---
+
+# ⚙️ Installation & Setup
+
+## 1️⃣ Clone the repository
+
+```bash
+git clone <your-repository-link>
+```
+
+## 2️⃣ Navigate into the project folder
+
+```bash
+cd FocusBee
+```
+
+## 3️⃣ Install dependencies
+
+```bash
+npm install
+```
+
+## 4️⃣ Start development server
+
+```bash
+npm run dev
+```
+
+---
+
+# 📦 Dependencies Used
+
+```bash
+npm install react-router-dom
+npm install chart.js react-chartjs-2
+```
+
+---
+
+# 🎮 Gamification Logic
+
+## XP System
+
+* Focusing earns XP
+* Distractions reduce XP
+
+## Levels
+
+* Every 10 minutes of focus increases level
+
+## Badges
+
+* 🌱 Starter
+* 🚀 Beginner
+* 💪 Pro
+* 🔥 Master
+
+## Achievements
+
+* First Focus Session
+* One Hour Deep Work
+* Zero Distractions
+
+---
+
+# 📸 Screens Included
+
+* Home Page
+* Focus Timer
+* Dashboard
+* Stats Page
+
+---
+
+# 🔮 Future Improvements
+
+* Dark Mode
+* User Authentication
+* Cloud Database
+* Weekly Analytics
+* Sound Notifications
+* Mobile Responsive Design
+* Advanced Productivity Insights
+
+---
+
+# 👩‍💻 Author
+
+Developed by Manpreet Kaur
+
+---
+
+# ⭐ Acknowledgements
+
+* React Documentation
+* Chart.js Documentation
+* Pomodoro Technique
+* Vite Documentation
