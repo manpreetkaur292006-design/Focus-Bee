@@ -34,16 +34,6 @@ const Timer = () => {
     localStorage.setItem("sessions", JSON.stringify(sessions));
   };
 
-  //   const handleReset = () => {
-  //   saveSession();
-
-  //   setIsRunning(false);
-  //   setMode("focus");
-  //   setTime(FOCUS_TIME);
-
-  //   setDistractionCount(0);
-  // };
-
   const handleReset = () => {
     const score = Math.max(100 - distractionCount * 10, 0);
 
