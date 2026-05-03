@@ -12,7 +12,7 @@ import {
   getAchievements,
 } from "../utils/gameLogic";
 
-import "../App.css"
+import "../App.css";
 
 const DashboardCards = () => {
   const [sessions, setSessions] = useState([]);
@@ -20,7 +20,7 @@ const DashboardCards = () => {
   const [breakTime, setBreakTime] = useState(0);
   const [distractionCount, setDistractionCount] = useState(0);
   const [goal, setGoal] = useState(
-    Number(localStorage.getItem("dailyGoal")) || 3600
+    Number(localStorage.getItem("dailyGoal")) || 3600,
   );
   const [dailyStreak, setDailyStreak] = useState(0);
 
@@ -33,8 +33,7 @@ const DashboardCards = () => {
   const levelProgress = getLevelProgress(focusTime);
   const total = focusTime + breakTime;
   const message = getMotivation(focusTime);
-  const productivity =
-    total === 0 ? 0 : ((focusTime / total) * 100).toFixed(1);
+  const productivity = total === 0 ? 0 : ((focusTime / total) * 100).toFixed(1);
   const achievements = getAchievements(focusTime, distractionCount);
   const sessionsCount = JSON.parse(localStorage.getItem("sessions")) || [];
 
@@ -54,7 +53,7 @@ const DashboardCards = () => {
       setFocusTime(Number(localStorage.getItem("focusTime")) || 0);
       setBreakTime(Number(localStorage.getItem("breakTime")) || 0);
       setDistractionCount(
-        Number(localStorage.getItem("distractionCount")) || 0
+        Number(localStorage.getItem("distractionCount")) || 0,
       );
     }, 1000);
     return () => clearInterval(interval);
@@ -124,11 +123,11 @@ const DashboardCards = () => {
           <div className="stat-card" key={i}>
             <div className="stat-icon">{card.icon}</div>
             <div className="stat-label">{card.label}</div>
-            <div className={`stat-value${card.isText ? " stat-value--text" : ""}`}>
+            <div
+              className={`stat-value${card.isText ? " stat-value--text" : ""}`}
+            >
               {card.value}
-              {card.unit && (
-                <span className="stat-unit">{card.unit}</span>
-              )}
+              {card.unit && <span className="stat-unit">{card.unit}</span>}
             </div>
           </div>
         ))}
@@ -170,9 +169,7 @@ const DashboardCards = () => {
             <span>Level: {levelProgress.toFixed(1)}% to next</span>
           </div>
 
-          {goalDone && (
-            <div className="goal-done">✅ Goal Completed!</div>
-          )}
+          {goalDone && <div className="goal-done">✅ Goal Completed!</div>}
         </div>
 
         {/* Summary */}
@@ -225,9 +222,7 @@ const DashboardCards = () => {
               </div>
               <div className="session-row">
                 ⚡{" "}
-                <span className="session-tag">
-                  {bestSession.distractions}
-                </span>{" "}
+                <span className="session-tag">{bestSession.distractions}</span>{" "}
                 distraction{bestSession.distractions !== 1 ? "s" : ""}
               </div>
             </div>
@@ -310,6 +305,11 @@ const DashboardCards = () => {
                   <div className="metric-chip">
                     <div className="mc-val">{sessionProductivity}%</div>
                     <div className="mc-lbl">Productivity</div>
+                  </div>
+                  <div className="metric-chip">
+                    <div className="mc-val">{session.score}</div>
+
+                    <div className="mc-lbl">Focus Score</div>
                   </div>
                 </div>
               </div>
