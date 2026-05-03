@@ -4,7 +4,13 @@
 
 FocusBee is a productivity and focus management web application built using React and Vite. The application helps users improve concentration using the Pomodoro Technique while tracking productivity statistics, focus streaks, achievements, goals, and session history.
 
----
+***
+
+# Live Demo
+
+[focus-bee](https://focusbee.netlify.app/)
+
+***
 
 # 🚀 Features
 
@@ -15,6 +21,7 @@ FocusBee is a productivity and focus management web application built using Reac
 * Start, Pause, and Reset controls
 * Automatic switching between focus and break modes
 * Alert notifications when sessions end
+* Light and Dark mode Toggle
 
 ## 📊 Statistics Dashboard
 
@@ -23,6 +30,7 @@ FocusBee is a productivity and focus management web application built using Reac
 * Distraction count tracking
 * Productivity percentage
 * Interactive charts using Chart.js
+* Focus Heatmap
 
 ## 🏆 Gamification System
 
@@ -43,7 +51,6 @@ FocusBee is a productivity and focus management web application built using Reac
 
 * Stores session history using Local Storage
 * Tracks:
-
   * Date
   * Focus duration
   * Break duration
@@ -53,7 +60,6 @@ FocusBee is a productivity and focus management web application built using Reac
 
 * Saves user data even after page refresh
 * Stores:
-
   * Focus time
   * Break time
   * Distractions
@@ -61,7 +67,7 @@ FocusBee is a productivity and focus management web application built using Reac
   * Sessions
   * Streaks
 
----
+***
 
 # 🛠 Tech Stack
 
@@ -73,53 +79,54 @@ FocusBee is a productivity and focus management web application built using Reac
 * CSS
 * Local Storage API
 
----
+***
 
 # 📁 Project Structure
 
 ```bash
-FOCUSBEE-CAPSTONE/
-└── Focus-Bee/
-    ├── node_modules/
-    ├── public/
-    ├── src/
-    │   ├── assets/
-    │   ├── components/
-    │   │   ├── DashboardCards.jsx
-    │   │   ├── Hero.jsx
-    │   │   ├── NavBar.jsx
-    │   │   ├── QuotesCard.jsx
-    │   │   ├── Stats.jsx
-    │   │   ├── TaskList.jsx
-    │   │   └── Timer.jsx
-    │   │
-    │   ├── pages/
-    │   │   ├── DashboardPage.jsx
-    │   │   ├── FocusPage.jsx
-    │   │   ├── Home.jsx
-    │   │   └── StatsPage.jsx
-    │   │
-    │   ├── utils/
-    │   │   ├── formatTime.js
-    │   │   ├── gameLogic.js
-    │   │   └── localStorage.js
-    │   │
-    │   ├── App.css
-    │   ├── App.jsx
-    │   ├── index.css
-    │   └── main.jsx
-    │
-    ├── .gitignore
-    ├── eslint.config.js
-    ├── index.html
-    ├── package-lock.json
-    ├── package.json
-    ├── README.md
-    ├── vite.config.js
-    └── Focus-Bee.md
+Focus-Bee/
+├── node_modules/
+├── public/
+├── src/
+│   ├── assets/
+│   │   ├── FocusBeeLogo.png
+│   │   └── herobg.png
+│   │
+│   ├── components/
+│   │   ├── DashboardCards.jsx
+│   │   ├── FocusHeatmap.jsx
+│   │   ├── Hero.jsx
+│   │   ├── NavBar.jsx
+│   │   ├── QuotesCard.jsx
+│   │   ├── Stats.jsx
+│   │   ├── TaskList.jsx
+│   │   └── Timer.jsx
+│   │
+│   ├── pages/
+│   │   ├── DashboardPage.jsx
+│   │   ├── FocusPage.jsx
+│   │   ├── Home.jsx
+│   │   └── StatsPage.jsx
+│   │
+│   ├── utils/
+│   │   ├── formatTime.js
+│   │   ├── gameLogic.js
+│   │   └── localStorage.js
+│   │
+│   ├── App.css
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+│
+├── .gitignore
+├── eslint.config.js
+├── package-lock.json
+├── package.json
+├── README.md
+└── vite.config.js
 ```
 
----
+***
 
 # ⚙️ Installation & Setup
 
@@ -132,7 +139,7 @@ git clone <your-repository-link>
 ## 2️⃣ Navigate into the project folder
 
 ```bash
-cd FocusBee
+cd Focus-Bee
 ```
 
 ## 3️⃣ Install dependencies
@@ -147,7 +154,7 @@ npm install
 npm run dev
 ```
 
----
+***
 
 # 📦 Dependencies Used
 
@@ -156,7 +163,7 @@ npm install react-router-dom
 npm install chart.js react-chartjs-2
 ```
 
----
+***
 
 # 🎮 Gamification Logic
 
@@ -182,7 +189,7 @@ npm install chart.js react-chartjs-2
 * One Hour Deep Work
 * Zero Distractions
 
----
+***
 
 # 📸 Screens Included
 
@@ -191,7 +198,7 @@ npm install chart.js react-chartjs-2
 * Dashboard
 * Stats Page
 
----
+***
 
 # 🔮 Future Improvements
 
@@ -203,13 +210,13 @@ npm install chart.js react-chartjs-2
 * Mobile Responsive Design
 * Advanced Productivity Insights
 
----
+***
 
 # 👩‍💻 Author
 
 Developed by Manpreet Kaur
 
----
+***
 
 # ⭐ Acknowledgements
 
