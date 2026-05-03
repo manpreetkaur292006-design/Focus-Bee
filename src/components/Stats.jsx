@@ -14,26 +14,11 @@ import {
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const Stats = () => {
-  // const [focusTime, setFocusTime] = useState(0);
-  // const [breakTime, setBreakTime] = useState(0);
-  // const [distractionCount, setDistractionCount] = useState(0);
-
+  
   const getSafeNumber = (value) => {
     const num = Number(value);
     return isNaN(num) ? 0 : num;
   };
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setFocusTime(getSafeNumber(localStorage.getItem("focusTime")));
-  //     setBreakTime(getSafeNumber(localStorage.getItem("breakTime")));
-  //     setDistractionCount(
-  //       getSafeNumber(localStorage.getItem("distractionCount")),
-  //     );
-  //   }, 1000);
-
-  //   return () => clearInterval(interval);
-  // }, []);
 
   const sessions = JSON.parse(localStorage.getItem("sessions")) || [];
 
