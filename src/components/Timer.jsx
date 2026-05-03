@@ -15,6 +15,8 @@ const Timer = () => {
   const [focusTime, setFocusTime] = useState(0);
   const [breakTime, setBreakTime] = useState(0);
 
+  const [focusScore, setFocusScore] = useState(100);
+
   // save the each session history
   const saveSession = () => {
     const sessions = JSON.parse(localStorage.getItem("sessions")) || [];
@@ -24,6 +26,7 @@ const Timer = () => {
       focus: focusTime,
       break: breakTime,
       distractions: distractionCount,
+      score: focusScore,
     };
 
     sessions.push(newSession);
@@ -31,16 +34,50 @@ const Timer = () => {
     localStorage.setItem("sessions", JSON.stringify(sessions));
   };
 
+  //   const handleReset = () => {
+  //   saveSession();
+
+  //   setIsRunning(false);
+  //   setMode("focus");
+  //   setTime(FOCUS_TIME);
+
+  //   setDistractionCount(0);
+  // };
+
   const handleReset = () => {
-    saveSession();
+    const score = Math.max(100 - distractionCount * 10, 0);
+
+    setFocusScore(score);
+
+    const sessions = JSON.parse(localStorage.getItem("sessions")) || [];
+
+    const newSession = {
+      date: new Date().toLocaleDateString(),
+      focus: focusTime,
+      break: breakTime,
+      distractions: distractionCount,
+      score: score,
+    };
+
+    sessions.push(newSession);
+
+    localStorage.setItem("sessions", JSON.stringify(sessions));
 
     setIsRunning(false);
     setMode("focus");
     setTime(FOCUS_TIME);
+
+    setDistractionCount(0);
   };
 
   const handleDistraction = () => {
     setDistractionCount((prev) => prev + 1);
+  };
+
+  const calculateFocusScore = () => {
+    const score = Math.max(100 - distractionCount * 10, 0);
+
+    setFocusScore(score);
   };
 
   useEffect(() => {
@@ -58,8 +95,12 @@ const Timer = () => {
         setTime((prevTime) => {
           if (prevTime === 0) {
             if (mode === "focus") {
+              calculateFocusScore();
+
               alert("Focus session complete! Time for a break 🧘");
+
               setMode("break");
+
               return BREAK_TIME;
             } else {
               alert("Break over! Back to focus 💪");
@@ -108,6 +149,21 @@ const Timer = () => {
     }
   }, []);
 
+  // detect tab switching
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setDistractionCount((prev) => prev + 1);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
   return (
     <div className="main-timer-div">
       <h1 className="timer-h1">Timer</h1>
@@ -116,6 +172,13 @@ const Timer = () => {
         {mode === "focus" ? "Focus Time" : "Break Time"}
       </h3>
       <h3 className="timer-h3">Distractions : {distractionCount}</h3>
+      <h3 className="timer-h3">Focus Score : {focusScore}</h3>
+
+      {focusScore >= 80 && <p>🔥 Deep Focus</p>}
+
+      {focusScore >= 50 && focusScore < 80 && <p>👍 Good Session</p>}
+
+      {focusScore < 50 && <p>⚠ Distracted Session</p>}
       <div className="timer-btn-group">
         <button
           onClick={() => setIsRunning(true)}
